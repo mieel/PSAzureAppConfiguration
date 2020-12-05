@@ -18,15 +18,19 @@ pr:
 variables:
   - group: powershell-vargroup
 
+resources:
+  repositories:
+    - repository: plumber
+      type: github
+      name: mieel/plumber
+      endpoint: mieel
+
 stages:
-  - template: azure-pipelines-templates/azure-pipelines-build-publish-psmodule.stage.yml
+  - template: azure-pipelines-templates/azure-pipelines-build-publish-psmodule.stage.yml@plumber
     parameters:
-      ModuleName: Plumber
+      ModuleName: PSAzureAppConfiguration
       ProjectRoot: $(Build.SourcesDirectory)
       GitHubConnection: $(GithubServiceConnection)
       PackageSourceUrl: $(PackageSourceUrl)   # from linked group
       PackageSourcePat: $(PackageSourcePat) # from linked group
       UseGitVersionConfigFile: ./GitVersion.yml  # we need to do this because 'main' is not supported out of the box
-      CheckoutPlumber: no
-      PlumberRepoRoot: $(Build.SourcesDirectory)
-      CopyPaths: '..\Scripts'   # Include the scripts folder into build output

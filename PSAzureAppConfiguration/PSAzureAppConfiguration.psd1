@@ -13,16 +13,16 @@
             ReleaseNotes   = ''
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags           = 'Authoring','Build','Development'
+            Tags           = 'Configuration','Azure','Azure App Configuration'
 
             # A URL to the license for this module.
-            LicenseUri     = 'https://github.com/mieel/plumber/blob/main/LICENSE'
+            LicenseUri     = 'https://github.com/mieel/PSAzureAppConfiguration/blob/main/LICENSE'
 
             # A URL to the main website for this project.
-            ProjectUri     = 'https://github.com/mieel/plumber'
+            ProjectUri     = 'https://github.com/mieel/PSAzureAppConfiguration'
 
             # A URL to an icon representing this module.
-            IconUri        = 'https://github.com/mieel/plumber/blob/resources/plumber.png?raw=true'
+            IconUri        = 'https://github.com/mieel/PSAzureAppConfiguration/blob/resources/PSAzureAppConfiguration.png?raw=true'
         } # End of PSData
     } # End of PrivateData
 
@@ -37,8 +37,8 @@
     AliasesToExport        = @()
 
     # ID used to uniquely identify this module
-    GUID                   = '8a4f5d47-eecb-496b-a6bb-9a06e7cc5772'
-    Description            = 'A module for building and maintaining Pipelines'
+    GUID                   = '0a181fbd-3208-4ab8-a2c3-120e65c09b7c'
+    Description            = 'A module for data retrieval from Azure App Configuration'
 
     # Common stuff for all our modules:
     CompanyName            = 'Michiel Thai'
