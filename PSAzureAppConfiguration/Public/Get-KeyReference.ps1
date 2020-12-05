@@ -4,7 +4,8 @@ function Get-KeyReference {
         ,
         $regex = '\$\([\w.]*\)'
     )
-    $matches = ($string | select-string -pattern $regex -AllMatches).Matches.Value
-    if ($matches) {
-        $matches.replace('$(','').replace(')','')
+    $references = ($string | select-string -pattern $regex -AllMatches).Matches.Value
+    if ($references) {
+        $references.replace('$(','').replace(')','')
     }
+}
