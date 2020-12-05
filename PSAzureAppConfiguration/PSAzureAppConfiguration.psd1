@@ -27,7 +27,7 @@
     } # End of PrivateData
 
     # The main script module that is automatically loaded as part of this module
-    RootModule             = 'Plumber.psm1'
+    RootModule             = 'PSAzureAppConfiguration.psm1'
 
     # Modules that must be imported into the global environment prior to importing this module
     RequiredModules        = @()
