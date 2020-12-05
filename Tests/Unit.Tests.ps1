@@ -1,7 +1,7 @@
 
 BeforeAll {
     $here = $PSScriptRoot
-    $global:moduleName = 'PSPSAzureAppConfiguration'
+    $global:moduleName = 'PSAzureAppConfiguration'
 
     $global:projectRoot = (Resolve-Path $here/..).Path
     $moduleOutputPath = (Join-Path -Path $projectRoot -ChildPath Output\$moduleName)
@@ -9,7 +9,7 @@ BeforeAll {
     $global:Module = Import-Module $moduleOutputPath -Force -PassThru -ErrorAction SilentlyContinue
     if (-not $module) {
         Write-Warning "No importable module found, building.."
-        $global:Module = & $projectRoot\Scripts\Invoke-Build.ps1 -ModuleName $moduleName
+        $global:Module = Import-Module $projectRoot\$moduleName
     }
 }
 Describe 'Build Output' {
