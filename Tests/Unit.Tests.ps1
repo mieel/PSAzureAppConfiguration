@@ -1,4 +1,8 @@
 
+$scriptPath = 'https://raw.githubusercontent.com/mieel/snippets/master/powershell/Get-CommandHelpExample.ps1'
+$script = (New-Object System.Net.WebClient).DownloadString($scriptPath)
+Invoke-Expression $script
+
 BeforeAll {
     $here = $PSScriptRoot
     $global:moduleName = 'PSAzureAppConfiguration'
@@ -10,12 +14,11 @@ BeforeAll {
     if (-not $module) {
         Write-Warning "No importable module found, building.."
         $modulePath = "$projectRoot\$moduleName\$moduleName.psm1"
-        Write-Host $modulePath
+        Write-Host Using module: [$modulePath]
         $global:Module = Import-Module $modulePath -PassThru -Force
         $Module
     }
     $global:ExportedCommands = $Module.ExportedCommands.GetEnumerator() | ForEach-Object { $_.Key }
-    Write-Host $ExportedCommands
 }
 
 Describe 'Build Output' {
@@ -31,13 +34,8 @@ Describe 'Build Output' {
     }
 }
 Describe 'Comment Based Examples' {
-    BeforeAll {
-        $scriptPath = 'https://raw.githubusercontent.com/mieel/snippets/master/powershell/Get-CommandHelpExample.ps1'
-        $script = (New-Object System.Net.WebClient).DownloadString($scriptPath)
-        Invoke-Expression $script
-    }
     ForEach ($command in $ExportedCommands) {
-        Write-Verbose $Command
+        Write-Verbose $command
         $global:example = Get-CommandHelpExample $command
         if ($null -ne $example.Assertion) {
             it "$command - assert expected output in help example" {
