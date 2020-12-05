@@ -1,0 +1,32 @@
+name: $(Build.DefinitionName)_$(Date:yyMMdd).$(Rev:rr)
+
+trigger:
+  branches:
+    include:
+      - main
+      - master
+  paths:
+    exclude:
+      - docs/*
+pr:
+  branches:
+    include:
+      - '*'
+  paths:
+    include:
+      - '*'
+variables:
+  - group: powershell-vargroup
+
+stages:
+  - template: azure-pipelines-templates/azure-pipelines-build-publish-psmodule.stage.yml
+    parameters:
+      ModuleName: Plumber
+      ProjectRoot: $(Build.SourcesDirectory)
+      GitHubConnection: $(GithubServiceConnection)
+      PackageSourceUrl: $(PackageSourceUrl)   # from linked group
+      PackageSourcePat: $(PackageSourcePat) # from linked group
+      UseGitVersionConfigFile: ./GitVersion.yml  # we need to do this because 'main' is not supported out of the box
+      CheckoutPlumber: no
+      PlumberRepoRoot: $(Build.SourcesDirectory)
+      CopyPaths: '..\Scripts'   # Include the scripts folder into build output
