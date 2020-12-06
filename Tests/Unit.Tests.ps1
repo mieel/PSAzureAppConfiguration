@@ -16,7 +16,6 @@ BeforeAll {
         $modulePath = "$projectRoot\$moduleName\$moduleName.psm1"
         Write-Host Using module: [$modulePath]
         $global:Module = Import-Module $modulePath -PassThru -Force
-        $Module
     }
     $global:ExportedCommands = $Module.ExportedCommands.GetEnumerator() | ForEach-Object { $_.Key }
 }
@@ -36,21 +35,21 @@ Describe 'Build Output' {
 Describe 'Comment Based Examples' {
     ForEach ($command in $ExportedCommands) {
         Write-Verbose $command
-        $global:example = Get-CommandHelpExample $command
-        if ($null -ne $example.Assertion) {
-            it "$command - assert expected output in help example" {
+        $examples = Get-CommandHelpExample $command | Where-Object { $null -ne $_.Assertion }
+        if ($examples) {
+            it "$command - assert expected output in help example" -TestCases @($examples) {
+                param(
+                    [string] $Scriptblock
+                    ,
+                    [string] $Assertion
+                )
                 ## Test the code block if Expected Output is specified
-                $expectedOutput = Invoke-Expression ($Example.Assertion | Out-String)
-                $actualOutput = Invoke-Expression $Example.Scriptblock
-
+                $expectedOutput = Invoke-Expression $Assertion
+                $actualOutput = Invoke-Expression $Scriptblock
                 $actualOutput | Should -Be $expectedOutput
-
             }
         } else {
             Write-Verbose 'no expected output found'
         }
     }
-}
-Describe 'Get-KeyReference' {
-
 }

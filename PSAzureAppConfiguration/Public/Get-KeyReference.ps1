@@ -5,9 +5,12 @@ function Get-KeyReference {
             Default prefix and suffix is '$(' and ')'
             Only words chars and dots are allowed as key strings
         .EXAMPLE
-            $string = 'asdfsadf'
             Get-KeyReference -String 'MyServer=$(MyApp.Database.Server);Database=$(MyApp.Database.Name);Trusted_Connection=Yes'
             Expected Output: @('MyApp.Database.Server','MyApp.Database.Name')
+        .EXAMPLE
+            $string = '$(MyDomain)\$(MyUserName)_$(Environment)'
+            Get-KeyReference -String $string
+            Expected Output: @('MyDomain','MyUserName','Environment')
     #>
     param(
         [string] $String
