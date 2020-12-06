@@ -15,6 +15,9 @@ pr:
   paths:
     include:
       - '*'
+    exclude:
+      - README.md
+      - docs/*
 variables:
   - group: powershell-vargroup
 
@@ -34,3 +37,4 @@ stages:
       PackageSourceUrl: $(PackageSourceUrl)   # from linked group
       PackageSourcePat: $(PackageSourcePat) # from linked group
       UseGitVersionConfigFile: ./GitVersion.yml  # we need to do this because 'main' is not supported out of the box
+      PublishRepoName: PSGallery
