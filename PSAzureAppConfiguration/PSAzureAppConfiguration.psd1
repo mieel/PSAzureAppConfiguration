@@ -13,7 +13,7 @@
             ReleaseNotes   = ''
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags           = 'Configuration','Azure','Azure App Configuration'
+            Tags           = 'Configuration','Azure','AzureAppConfiguration'
 
             # A URL to the license for this module.
             LicenseUri     = 'https://github.com/mieel/PSAzureAppConfiguration/blob/main/LICENSE'
