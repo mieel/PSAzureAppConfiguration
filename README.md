@@ -2,6 +2,8 @@
 
 Powershell Module for retrieving keys and secrets from an Azure App Configuration store
 
+✅ Supports references to other keys
+
 Prerequisites:
 - azure cli installed
 - a service principle [set up](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli)
