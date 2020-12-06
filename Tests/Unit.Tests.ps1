@@ -6,7 +6,7 @@ Invoke-Expression $script
 BeforeAll {
     $here = $PSScriptRoot
     $global:moduleName = 'PSAzureAppConfiguration'
-
+    Remove-Module $moduleName -ErrorAction Ignore
     $global:projectRoot = (Resolve-Path $here/..).Path
     $moduleOutputPath = (Join-Path -Path $projectRoot -ChildPath Output\$moduleName)
     Write-Host "Checking existing output in: " $moduleOutputPath
