@@ -3,6 +3,7 @@ function Get-AppConfigurationKeyValue {
     param(
         [string] $Key = '*'
         ,
+        [parameter(Mandatory)]
         [string] $Store
         ,
         [string] $Label = '*'
@@ -10,6 +11,8 @@ function Get-AppConfigurationKeyValue {
         [switch] $NoResolveSecret
         ,
         [switch] $ExcludeNoLabel
+        ,
+        [switch] $ConvertReferences
     )
     # az appconfig kv list -h
     If (-not $NoResolveSecret) {
@@ -20,7 +23,9 @@ function Get-AppConfigurationKeyValue {
 
     ForEach ($kv in $Output) {
         $value = $kv.value
-        $value = Convert-KeyReference -String $value -Dictionary $Output
+        if ($ConvertReferences) {
+            $value = Convert-KeyReference -String $value -Dictionary $Output
+        }
         Write-Output @{ $kv.key = $value}
     }
 }
