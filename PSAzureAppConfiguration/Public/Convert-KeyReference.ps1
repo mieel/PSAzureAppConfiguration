@@ -52,7 +52,12 @@ function Convert-KeyReference {
         [String] $Prefix = '\$\('
         ,
         [String] $Suffix = '\)'
+        ,
+        [int] $Cycle = 0
     )
+    if ($Cycle -ge 5) {
+        Return
+    }
     $stringOutput = $string
     $references = Get-KeyReference -String $string -Regex "$Prefix[\w.]*$Suffix"
     if (-not $references) {
@@ -61,8 +66,10 @@ function Convert-KeyReference {
     $references | Foreach-Object {
         $refKey = $_
         $refValue = ($Dictionary | Where-Object {$_.key -eq $refkey}).Value
-        Write-Verbose "$refkey resolved to $refValue"
-        $stringOutput = $stringOutput -replace "$Prefix$refKey$Suffix",$refValue
+        if ($refValue) {
+            Write-Verbose "$refkey resolved to $refValue"
+            $stringOutput = $stringOutput -replace "$Prefix$refKey$Suffix",$refValue
+        }
     }
-    Convert-KeyReference -String $stringOutput -Dictionary $Dictionary
+    Convert-KeyReference -String $stringOutput -Dictionary $Dictionary -Cycle ($Cycle+1)
 }

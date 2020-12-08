@@ -3,6 +3,7 @@ function Get-AppConfigurationKeyValue {
     param(
         [string] $Key = '*'
         ,
+        [parameter(Mandatory)]
         [string] $Store
         ,
         [string] $Label = '*'
@@ -10,17 +11,23 @@ function Get-AppConfigurationKeyValue {
         [switch] $NoResolveSecret
         ,
         [switch] $ExcludeNoLabel
+        ,
+        [switch] $ConvertReferences
     )
     # az appconfig kv list -h
-    If (-not $NoResolveSecret) {
+    if (-not $NoResolveSecret) {
         $resolveKv = '--resolve-keyvault'
     }
-    $Output = az appconfig kv list --name $Store --label \0 --key $Key $resolveKv | ConvertFrom-Json
-    $Output += az appconfig kv list --name $Store --label $Label --key $Key $resolveKv | ConvertFrom-Json
-
-    ForEach ($kv in $Output) {
+    $keyValues = az appconfig kv list --name $Store --label \0,$Label --key $Key $resolveKv | ConvertFrom-Json
+    # when multiple keys are returned, keep the one with the label
+    $Output = $keyValues | Group-object -Property Key | ForEach-Object {
+        $_.Group | Sort-Object -Property Label -Descending | Select-Object -First 1
+    }
+    foreach ($kv in $Output) {
         $value = $kv.value
-        $value = Convert-KeyReference -String $value -Dictionary $Output
+        if ($ConvertReferences) {
+            $value = Convert-KeyReference -String $value -Dictionary $Output
+        }
         Write-Output @{ $kv.key = $value}
     }
 }
