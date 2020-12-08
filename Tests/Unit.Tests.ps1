@@ -1,8 +1,3 @@
-
-$scriptPath = 'https://raw.githubusercontent.com/mieel/snippets/master/powershell/Get-CommandHelpExample.ps1'
-$script = (New-Object System.Net.WebClient).DownloadString($scriptPath)
-Invoke-Expression $script
-
 BeforeAll {
     $here = $PSScriptRoot
     $global:moduleName = 'PSAzureAppConfiguration'
@@ -30,26 +25,5 @@ Describe 'Build Output' {
     it 'public functions should match exported commands' {
         $numberOfPublicFunctionFiles = ($publicFiles | Measure-Object).Count
         $ExportedCommands.Count | Should -Be $numberOfPublicFunctionFiles
-    }
-}
-Describe 'Comment Based Examples' {
-    ForEach ($command in $ExportedCommands) {
-        Write-Verbose $command
-        $examples = Get-CommandHelpExample $command | Where-Object { $null -ne $_.Assertion }
-        if ($examples) {
-            it "$command - assert expected output in help example" -TestCases @($examples) {
-                param(
-                    [string] $Scriptblock
-                    ,
-                    [string] $Assertion
-                )
-                ## Test the code block if Expected Output is specified
-                $expectedOutput = Invoke-Expression $Assertion
-                $actualOutput = Invoke-Expression $Scriptblock
-                $actualOutput | Should -Be $expectedOutput
-            }
-        } else {
-            Write-Verbose 'no expected output found'
-        }
     }
 }
