@@ -36,7 +36,7 @@ Get-AppConfigurationKeyValue -Store $store -Key Common* -ConvertReferences
 ```
 
 Gets all key values starting with 'Common' from $store
-  and converts referenced keys
+and converts referenced keys
 
 ### EXAMPLE 3
 ```
