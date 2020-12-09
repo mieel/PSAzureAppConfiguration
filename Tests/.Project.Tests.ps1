@@ -2,7 +2,7 @@
 
 Describe "General project validation: $moduleName" {
 
-    $scripts = Get-ChildItem $script:moduleRoot -Include *.ps1, *.psm1, *.psd1 -Recurse
+    $scripts = Get-ChildItem $global:moduleRoot -Include *.ps1, *.psm1, *.psd1 -Recurse
 
     # TestCases are splatted to the script so we need hashtables
     $testCase = $scripts | Foreach-Object {@{file = $_}}
@@ -17,7 +17,7 @@ Describe "General project validation: $moduleName" {
         $errors.Count | Should -Be 0
     }
 
-    It "Module can import cleanly [script:$modulePath]" {
-        {Import-Module $script:modulePath -force } | Should -Not -Throw
+    It "Module can import cleanly [$global:modulePath]" {
+        {Import-Module $global:modulePath -force } | Should -Not -Throw
     }
 }
