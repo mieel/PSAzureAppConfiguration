@@ -5,6 +5,7 @@ Invoke-Expression $script
 . $PSScriptRoot\Init.ps1
 
 Write-Host Commands: ($ExportedCommands -join ',')
+$Private = Get-ChildItem '..\Private' -Filter '*.ps1'
 Describe 'Comment Based Examples' {
 
     ForEach ($command in $ExportedCommands) {
