@@ -17,7 +17,7 @@ Describe "General project validation: $moduleName" {
         $errors.Count | Should -Be 0
     }
 
-    It "Module can import cleanly [$global:modulePath]" {
-        {Import-Module $global:modulePath -force } | Should -Not -Throw
+    It "Module can import cleanly [$($global:module.Path)]" {
+        {Import-Module $global:Module.Path -force } | Should -Not -Throw
     }
 }
