@@ -27,3 +27,8 @@ Describe 'Build Output' {
         $ExportedCommands.Count | Should -Be $numberOfPublicFunctionFiles
     }
 }
+
+Describe 'Set-AppConfigurationFeature' {
+    BeforeAll {
+    }
+}

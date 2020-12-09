@@ -12,21 +12,16 @@ function Get-AppConfigurationFeature {
         [parameter(Mandatory)]
         [string] $Store
         ,
-        [string] $Label = '*'
+        [string] $Label = 'Acceptance'
         ,
         [switch] $ExcludeNoLabel
     )
-    $labelQuery = "\0,$Label"
-    if ( -not $PSBoundParameters.ExcludeNoLabel ) {
-        $labelQuery = "$Label"
-    }
-    $features = az appconfig feature list --name $Store --label $labelQuery --feature $Feature  | ConvertFrom-Json
+    $labelQuery = Get-LabelQuery @PSBoundParameters
+    $features = az appconfig feature list --name $Store --label $labelQuery --feature $Feature | ConvertFrom-Json
     # when multiple keys are returned, keep the one with the label
     $Output = $features | Group-object -Property Key | ForEach-Object {
         $_.Group | Sort-Object -Property Label -Descending | Select-Object -First 1
     }
-    foreach ($kv in $Output) {
-        $value = $kv.state
-        Write-Output @{ $kv.key = $value}
-    }
+    $Output | Add-Member -NotePropertyName Store -NotePropertyValue $Store
+    Write-Output $Output
 }
