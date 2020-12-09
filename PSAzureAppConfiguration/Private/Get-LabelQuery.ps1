@@ -7,7 +7,7 @@ function Get-LabelQuery {
             Expected Output: '\0'
         .EXAMPLE
             Get-LabelQuery -Label Prod
-            Expected Output: "'\0',Prod"
+            Expected Output: "\0,Prod"
         .EXAMPLE
             Get-LabelQuery -Label *
             Expected Output: "*"
