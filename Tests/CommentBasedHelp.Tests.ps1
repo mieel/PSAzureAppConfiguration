@@ -4,26 +4,28 @@ Invoke-Expression $script
 
 . $PSScriptRoot\Init.ps1
 
-Write-Host Commands: ($ExportedCommands -join ',')
-Describe 'Comment Based Examples' {
+$global:ModuleCommands = $Module.Invoke({Get-Command -Module $moduleName})
 
-    ForEach ($command in $ExportedCommands) {
-        Write-Verbose $command
-        $examples = Get-CommandHelpExample $command | Where-Object { $null -ne $_.Assertion }
-        if ($examples) {
-            it "$command - assert expected output in help example" -TestCases @($examples) {
-                param(
-                    [string] $Scriptblock
-                    ,
-                    [string] $Assertion
-                )
-                ## Test the code block if Expected Output is specified
-                $expectedOutput = Invoke-Expression $Assertion
-                $actualOutput = Invoke-Expression $Scriptblock
-                $actualOutput | Should -Be $expectedOutput
+Write-Host $ModuleCommands
+
+$CommandExamples = @()
+$CommandExamples += $ModuleCommands | ForEach-Object {
+    $cmd = $_
+    $examples = Get-CommandHelpExample $cmd.Name | Where-Object { $null -ne $_.Assertion }
+    if ($examples) {
+        @{
+            Command = @{
+                Name = $cmd.Name
+                Examples = $examples
             }
-        } else {
-            Write-Verbose 'no expected output found'
         }
+    }
+}
+Describe "<Command.Name> Comment Based Examples" -ForEach $CommandExamples {
+    it "{<_.Scriptblock>} Should return the expected output => <_.Assertion>" -ForEach @($Command.Examples) {
+        ## Test the code block if Expected Output is specified
+        $expectedOutput = Invoke-Expression $Assertion
+        $actualOutput = Invoke-Expression $ScriptBlock
+        $actualOutput | Should -Be $expectedOutput
     }
 }

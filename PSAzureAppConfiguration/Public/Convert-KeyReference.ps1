@@ -19,7 +19,9 @@ function Convert-KeyReference {
             )
             $string = '$(MyDomain)\$(MyUserName)_$(Environment)'
             Convert-KeyReference -String $string -Dictionary $dict
+
             Expected Output: "Contoso\Bob_Production"
+
         .EXAMPLE
             $dict = @(
                 @{
