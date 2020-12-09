@@ -4,7 +4,7 @@ Remove-Module $moduleName -ErrorAction Ignore
 $global:projectRoot = (Resolve-Path $here/..).Path
 $moduleOutputPath = (Join-Path -Path $projectRoot -ChildPath Output\$moduleName)
 Write-Host "Checking existing output in: " $moduleOutputPath
-$global:Module = Import-Module $moduleOutputPath -Force -PassThru -ErrorAction SilentlyContinue
+$global:Module = Import-Module $moduleOutputPath\$moduleName.psm1 -Force -PassThru -ErrorAction SilentlyContinue
 if (-not $module) {
     Write-Warning "No importable module found, building.."
     $script:moduleRoot = "$projectRoot\$moduleName"
