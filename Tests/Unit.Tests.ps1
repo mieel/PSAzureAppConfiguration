@@ -22,8 +22,4 @@ Describe 'Build Output' {
     it 'should have ExportedCommands' {
         $ExportedCommands | Should -Not -Be -$null
     }
-    it 'public functions should match exported commands' {
-        $numberOfPublicFunctionFiles = ($publicFiles | Measure-Object).Count
-        $ExportedCommands.Count | Should -Be $numberOfPublicFunctionFiles
-    }
 }
