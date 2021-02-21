@@ -30,7 +30,7 @@ Using this modules `Get-AppConfigurationKeyValue` will give you the values of th
 ## Install module
 From PowerShell, using the the PSGallery:
 
-`install-module PSAzureAppConfiguration`
+`Install-module PSAzureAppConfiguration`
 
 ## Usage
 Login into Azure account using a service principal
