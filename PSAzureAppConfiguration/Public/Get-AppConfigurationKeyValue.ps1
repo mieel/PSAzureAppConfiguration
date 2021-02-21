@@ -59,9 +59,11 @@ function Get-AppConfigurationKeyValue {
         $keyValues = Invoke-AzCli -Arguments "appconfig kv list --name $Store --label $labelQuery --key $Key $limitTop $resolveKv"
     }
     Write-Verbose "Loaded $($keyValues.Count) keys in $($m.TotalMilliseconds)"
-    # when multiple keys are returned, keep the one with the label
-    $Output = $keyValues | Group-object -Property Key | ForEach-Object {
-        $_.Group | Sort-Object -Property Label -Descending | Select-Object -First 1
+    # when specifying a Label, and keep the one with the label (ignore the no-label)
+    if ($Label -ne '*') {
+        $Output = $keyValues | Group-object -Property Key | ForEach-Object {
+            $_.Group | Sort-Object -Property Label -Descending | Select-Object -First 1
+        }
     }
     foreach ($kv in $Output) {
         $value = $kv.value
