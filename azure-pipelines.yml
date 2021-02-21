@@ -27,7 +27,6 @@ resources:
       type: github
       name: mieel/plumber
       endpoint: mieel
-      ref: refs/tags/$(Plumber.StableVersion)
 
 stages:
   - template: azure-pipelines-templates/azure-pipelines-build-publish-psmodule.stage.yml@plumber
