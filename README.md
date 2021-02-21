@@ -1,15 +1,20 @@
 # PSAzureAppConfiguration
 
-Powershell Module for retrieving keys and secrets from an Azure App Configuration store
+A PowerShell Module for retrieving keys and secrets from an Azure App Configuration store.
 
-✅ Supports references to other keys
+Yes I'm fully aware that there already is a [PowerShell module available](https://docs.microsoft.com/en-us/powershell/module/az.appconfiguration/?view=azps-5.5.0#app-configuration) for Azure App Configuration, however this module is limited to administration only, no retrieving key/values or secrets.
 
-So if you have a key value pair:  
-`"Connectionstring": "Server=$(Server);Database=$(Database);Trusted_Connection=$(Trusted_Connection)"`
+My module is using the az cli as backend, which does retrieve values and secrets. But it doesn't support references to other keys natively.
+
+Consider the following **keyvalue** pair:
+
+key: `Connectionstring`
+
+value: `Server=$(Server);Database=$(Database);Trusted_Connection=$(Trusted_Connection)"`
 
 When you `list` the keyvalue using `az appconfig`, you would get:  
 `Server=$(Server);Database=$(Database);Trusted_Connection=$(Trusted_Connection)`  
-even though you have the keys Server, Database and Trusted_Connection available.
+even though you have the keys `Server`, `Database` and `Trusted_Connection` available.
 
 Using this modules `Get-AppConfigurationKeyValue` will give you the values of the referenced keys aswell:  
 
@@ -23,6 +28,8 @@ Using this modules `Get-AppConfigurationKeyValue` will give you the values of th
 - azure cli installed
 - a service principle [set up](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli)
 ## Install module
+From PowerShell, using the the PSGallery:
+
 `install-module PSAzureAppConfiguration`
 
 ## Usage
