@@ -60,8 +60,9 @@ function Get-AppConfigurationKeyValue {
     }
     Write-Verbose "Loaded $($keyValues.Count) keys in $($m.TotalMilliseconds)"
     # when specifying a Label, and keep the one with the label (ignore the no-label)
+    $Output = $keyValues
     if ($Label -ne '*') {
-        $Output = $keyValues | Group-object -Property Key | ForEach-Object {
+        $Output = $Output | Group-object -Property Key | ForEach-Object {
             $_.Group | Sort-Object -Property Label -Descending | Select-Object -First 1
         }
     }
